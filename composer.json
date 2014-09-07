@@ -1,0 +1,18 @@
+{
+    "name": "pauldewouters/badass-registration",
+    "description": "Extra features for the WordPress registration process",
+    "license": "GPL-2.0+",
+	"config": {
+		"vendor-dir": "inc/lib"
+	},
+    "authors": [
+        {
+            "name": "Paul de Wouters",
+            "email": "paul@hmn.md"
+        }
+    ],
+    "minimum-stability": "alpha",
+    "require": {
+		"johnbillion/extended-cpts": "dev-master"
+    }
+}
