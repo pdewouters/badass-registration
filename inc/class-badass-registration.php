@@ -69,10 +69,10 @@ class Badass_Registration {
 	/**
 	 * @return Badass_Registration
 	 */
-	public static function get_instance() {
+	public static function get_instance( $fields ) {
 
 		if ( ! ( self::$_instance instanceof Badass_Registration ) ) {
-			self::$_instance = new Badass_Registration();
+			self::$_instance = new Badass_Registration( $fields );
 		}
 
 		return self::$_instance;
