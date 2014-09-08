@@ -1,9 +1,18 @@
-<?php
+<?php namespace BadassRegistration;
+
+use BadassRegistration\Fields;
+use BadassRegistration\Field;
+use BadassRegistration\Text_Field;
 
 /**
  * Class Badass_Registration
  */
 class Badass_Registration {
+
+	/**
+	 * @var Fields
+	 */
+	protected $registration_fields;
 
 	/**
 	 * @var
@@ -13,12 +22,48 @@ class Badass_Registration {
 	/**
 	 *
 	 */
-	private function __construct() {
+	private function __construct( array $fields = array() ) {
 
 		add_action( 'register_form', array( $this, 'fields' ) );
+		add_action( 'user_register', array( $this, 'save_user_data' ), 10, 1 );
+
 		add_filter( 'shake_error_codes', array( $this, 'errors' ), 10, 2 );
 		add_filter( 'registration_errors', array( $this, 'registration_errors' ), 10, 3 );
 		add_filter( 'login_messages', array( $this, 'login_messages' ) );
+
+		$default_fields = array(
+			array(
+				'type'       => 'text',
+				'id'         => 'first_name',
+				'name'       => 'first_name',
+				'value'      => '',
+				'classes'    => array( 'input' ),
+				'label_text' => __( 'First name', 'badass-registration' ),
+			),
+			array(
+				'type'       => 'text',
+				'id'         => 'last_name',
+				'name'       => 'last_name',
+				'value'      => '',
+				'classes'    => array( 'input' ),
+				'label_text' => __( 'Last name', 'badass-registration' ),
+			)
+		);
+
+		$fields = wp_parse_args( $fields, $default_fields );
+
+		$this->registration_fields = new Fields();
+
+		foreach ( $fields as $field ) {
+
+			$class = '\\BadassRegistration\\' . ucwords( $field['type'] ) . '_Field';
+
+			$this->registration_fields->add(
+				new $class( $field )
+			);
+
+		}
+
 	}
 
 	/**
@@ -38,12 +83,13 @@ class Badass_Registration {
 	 */
 	public function fields() {
 
-		$first_name = isset( $_POST['first_name'] ) ? wp_unslash( $_POST['first_name'] ) : '';
-		$last_name  = isset( $_POST['last_name'] ) ? wp_unslash( $_POST['last_name'] ) : '';
+		foreach ( $this->registration_fields as $field ) {
+			if ( isset( $_POST[ $field->id_attr ] ) ) {
+				$field->value_attr = $field->sanitize( $_POST[ $field->id_attr ] );
+			}
+		}
 
-		$fields = '<p><label for="first_name">' . __( 'First name' ) . '<br /><input type="text" name="first_name" id="first_name" class="input" value="' . esc_attr( $first_name ) . '" size="25" /></label></p>';
-		$fields .= '<p><label for="last_name">' . __( 'Last name' ) . '<br /><input type="text" name="last_name" id="last_name" class="input" value="' . esc_attr( $last_name ) . '" size="25" /></label></p>';
-		echo apply_filters( 'baddass_registration_fields', $fields );
+		echo $this->registration_fields;
 	}
 
 	/**
@@ -92,5 +138,10 @@ class Badass_Registration {
 		$messages = 'Thank you for registering. An administrator will review your details and let you know when you can log in.';
 
 		return $messages;
+	}
+
+	public function save_user_data( $user_id ) {
+
+		var_dump( $_POST );
 	}
 }
