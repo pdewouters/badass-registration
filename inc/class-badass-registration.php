@@ -22,7 +22,10 @@ class Badass_Registration {
 	/**
 	 *
 	 */
-	private function __construct( array $fields = array() ) {
+	private function __construct( array $fields ) {
+
+		if ( empty( $fields ) )
+			throw new \Exception( 'No fields provided' );
 
 		add_action( 'register_form', array( $this, 'fields' ) );
 		add_action( 'user_register', array( $this, 'save_user_data' ), 10, 1 );
