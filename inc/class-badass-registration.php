@@ -31,27 +31,6 @@ class Badass_Registration {
 		add_filter( 'registration_errors', array( $this, 'registration_errors' ), 10, 3 );
 		add_filter( 'login_messages', array( $this, 'login_messages' ) );
 
-		$default_fields = array(
-			array(
-				'type'       => 'text',
-				'id'         => 'first_name',
-				'name'       => 'first_name',
-				'value'      => '',
-				'classes'    => array( 'input' ),
-				'label_text' => __( 'First name', 'badass-registration' ),
-			),
-			array(
-				'type'       => 'text',
-				'id'         => 'last_name',
-				'name'       => 'last_name',
-				'value'      => '',
-				'classes'    => array( 'input' ),
-				'label_text' => __( 'Last name', 'badass-registration' ),
-			)
-		);
-
-		$fields = wp_parse_args( $fields, $default_fields );
-
 		$this->registration_fields = new Fields();
 
 		foreach ( $fields as $field ) {
