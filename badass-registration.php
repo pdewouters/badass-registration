@@ -11,9 +11,10 @@ Domain Path: /languages
 */
 
 require_once plugin_dir_path( __FILE__ ) . 'inc/class-badass-registration.php';
+require_once plugin_dir_path( __FILE__ ) . 'inc/lib/class-fields.php';
 
 add_action( 'plugins_loaded', 'badass_registration_init' );
 
 function badass_registration_init() {
-	$GLOBALS['BDSSREG'] = Badass_Registration::get_instance();
+	$GLOBALS['BDSSREG'] = \BadassRegistration\Badass_Registration::get_instance();
 }
