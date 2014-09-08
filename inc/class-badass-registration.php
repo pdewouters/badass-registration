@@ -100,13 +100,15 @@ class Badass_Registration {
 	 */
 	public function errors( $errors, $redirect_to ) {
 
-		$errors[] = 'empty_first_name';
-		$errors[] = 'empty_last_name';
+		foreach ( $this->registration_fields as $field ) {
+			$errors[] = 'empty_'. $field->id_attr;
+		}
 
 		return $errors;
 	}
 
 	/**
+	 *
 	 * @param $errors
 	 * @param $sanitized_user_login
 	 * @param $user_email
