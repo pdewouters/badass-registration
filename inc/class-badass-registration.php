@@ -140,8 +140,17 @@ class Badass_Registration {
 		return $messages;
 	}
 
+	/**
+	 * Save custom fields to user meta.
+	 *
+	 * @param $user_id
+	 */
 	public function save_user_data( $user_id ) {
 
-		var_dump( $_POST );
+		foreach ( $this->registration_fields as $field ) {
+			if ( isset( $_POST[ $field->id_attr ] ) ) {
+				update_user_meta( $user_id, $field->id_attr, $field->sanitize( $_POST[ $field->id_attr ] ) );
+			}
+		}
 	}
 }
