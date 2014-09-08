@@ -164,7 +164,7 @@ class Text_Field extends Field {
 	 * @return array|string
 	 */
 	public function sanitize( $value ) {
-		return wp_unslash( $value );
+		return sanitize_text_field( $value );
 	}
 
 	/**
