@@ -16,5 +16,8 @@ require_once plugin_dir_path( __FILE__ ) . 'inc/lib/class-fields.php';
 add_action( 'plugins_loaded', 'badass_registration_init' );
 
 function badass_registration_init() {
-	$GLOBALS['BDSSREG'] = \BadassRegistration\Badass_Registration::get_instance();
+
+	$json = file_get_contents( apply_filters( 'badass_fields_file', plugin_dir_path( __FILE__ ) . 'inc/fields.json' ), FILE_USE_INCLUDE_PATH );
+	$fields = json_decode( $json, true );
+	$GLOBALS['BDSSREG'] = \BadassRegistration\Badass_Registration::get_instance( $fields );
 }
