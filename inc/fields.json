@@ -1,0 +1,26 @@
+[
+	{
+		"type": "text",
+		"id": "first_name",
+		"name": "first_name",
+		"value": "",
+		"classes": ["input"],
+		"label_text": "First name"
+	},
+	{
+		"type": "text",
+		"id": "last_name",
+		"name": "last_name",
+		"value": "",
+		"classes": ["input"],
+		"label_text": "Last name"
+	},
+	{
+		"type": "text",
+		"id": "url",
+		"name": "url",
+		"value": "",
+		"classes": ["input"],
+		"label_text": "Website"
+	}
+]
