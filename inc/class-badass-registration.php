@@ -115,21 +115,18 @@ class Badass_Registration {
 	 */
 	public function registration_errors( $errors, $sanitized_user_login, $user_email ) {
 
-		$user_first_name = sanitize_text_field( $_POST['first_name'] );
-		$user_last_name  = sanitize_text_field( $_POST['last_name'] );
-
-		if ( 0 === strlen( trim( $user_first_name ) ) ) {
-			$errors->add( 'first_name', __( '<strong>ERROR</strong>: Please enter your first name.' ), array( 'form-field' => 'first_name' ) );
-		}
-
-		if ( 0 === strlen( trim( $user_last_name ) ) ) {
-			$errors->add( 'last_name', __( '<strong>ERROR</strong>: Please enter your last name.' ), array( 'form-field' => 'last_name' ) );
+		foreach ( $this->registration_fields as $field ) {
+			if ( 0 === strlen( trim( $_POST[ $field->id_attr ] ) ) ) {
+				$errors->add( $_POST[ $field->id_attr ], __( '<strong>ERROR</strong>: Please enter your ' . $field->label_text . '.', 'badass-registration' ), array( 'form-field' => $_POST[ $field->id_attr ] ) );
+			}
 		}
 
 		return $errors;
 	}
 
 	/**
+	 * Display a confirmation message after successful registration submission.
+	 *
 	 * @param $messages
 	 *
 	 * @return string
