@@ -1,26 +1,60 @@
 [
 	{
+		"element": "input",
 		"type": "text",
 		"id": "first_name",
 		"name": "first_name",
 		"value": "",
 		"classes": ["input"],
-		"label_text": "First name"
+		"label": "First name"
 	},
 	{
+        "element": "input",
 		"type": "text",
 		"id": "last_name",
 		"name": "last_name",
 		"value": "",
 		"classes": ["input"],
-		"label_text": "Last name"
+		"label": "Last name"
 	},
 	{
+        "element": "input",
 		"type": "text",
-		"id": "url",
-		"name": "url",
+		"id": "company",
+		"name": "company",
 		"value": "",
 		"classes": ["input"],
-		"label_text": "Website"
-	}
+		"label": "Company"
+	},
+	{
+        "element": "input",
+		"type": "tel",
+		"id": "phone",
+		"name": "phone",
+		"value": "",
+		"classes": ["input"],
+		"label": "Phone"
+	},
+    {
+        "element": "input",
+        "type": "url",
+        "id": "url",
+        "name": "url",
+        "value": "",
+        "classes": ["input"],
+        "label": "URL"
+    },
+    {
+        "element": "select",
+        "type": "",
+        "id" : "age_group",
+        "name" : "age_group",
+        "option": [
+            {"text": "10-30"},
+            {"text": "20-40", "selected": true},
+            {"text": "50-80"}
+        ],
+        "label": "Age Group",
+        "classes": ["dropdown"]
+    }
 ]
