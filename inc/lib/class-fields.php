@@ -4,6 +4,7 @@
  * Class Fields
  * @package BadassRegistration
  */
+
 /**
  * Class Fields
  * @package BadassRegistration
@@ -21,7 +22,7 @@ class Fields implements \Iterator {
 	protected $_fields = array();
 
 	/**
-	 * @param $fields
+	 *
 	 */
 	public function __construct() {
 
@@ -94,47 +95,29 @@ class Fields implements \Iterator {
  */
 abstract class Field {
 
-	/**
-	 * @var
-	 */
-	protected $id_attr;
+	protected $attributes = array();
 
 	/**
-	 * @var
+	 * @param array $attributes
+	 *
+	 * @throws \Exception
 	 */
-	protected $name_attr;
+	public function __construct( array $attributes ) {
 
-	/**
-	 * @var
-	 */
-	protected $classes_attr;
+		if ( count( $attributes ) == 0 ) {
+			throw new \Exception( 'Attributes array is empty.' );
+		}
+		
+		$this->attributes = $attributes;
 
-	/**
-	 * @var
-	 */
-	protected $value_attr;
-
-	/**
-	 * @var
-	 */
-	protected $label_text;
-
-	/**
-	 * @param $attribute
-	 * @param $value
-	 */
-	public function __set( $attribute, $value ) {
-
-		$this->$attribute = $value;
 	}
 
-	/**
-	 * @param $attribute
-	 *
-	 * @return mixed
-	 */
-	public function __get( $attribute ) {
-		return $this->$attribute;
+	public function get_attribute( $key ) {
+		return $this->attributes[ $key ];
+	}
+
+	public function set_attribute( $key, $value ) {
+		$this->attributes[ $key ] = $value;
 	}
 
 }
@@ -143,41 +126,56 @@ abstract class Field {
  * Class Text_Field
  * @package BadassRegistration
  */
-class Text_Field extends Field {
-
-	/**
-	 * @param $attributes
-	 */
-	public function __construct( array $attributes ) {
-
-		$this->id_attr      = $attributes['id'];
-		$this->name_attr    = $attributes['name'];
-		$this->classes_attr = $attributes['classes'];
-		$this->value_attr   = $attributes['value'];
-		$this->label_text   = $attributes['label_text'];
-
-	}
-
-	/**
-	 * @param $value
-	 *
-	 * @return array|string
-	 */
-	public function sanitize( $value ) {
-		return sanitize_text_field( $value );
-	}
+class Input_Field extends Field {
 
 	/**
 	 * @return string
 	 */
 	public function __toString() {
 		return sprintf(
-			'<label>%1$s</label><br><input type="text" id="%2$s" name="%3$s" value="%4$s" class="%5$s" />',
-			esc_attr( $this->label_text ),
-			esc_attr( $this->id_attr ),
-			esc_attr( $this->name_attr ),
-			esc_attr( $this->value_attr ),
-			esc_attr( $this->classes_attr )
+			'<label>%1$s</label><br><input type="%2$s" id="%3$s" name="%4$s" value="%5$s" class="%6$s" />',
+			esc_attr( $this->get_attribute( 'label' ) ),
+			esc_attr( $this->get_attribute( 'type' ) ),
+			esc_attr( $this->get_attribute( 'id' ) ),
+			esc_attr( $this->get_attribute( 'name' ) ),
+			esc_attr( $this->get_attribute( 'value' ) ),
+			esc_attr( implode( ' ', $this->get_attribute( 'classes' ) ) )
 		);
 	}
+}
+
+/**
+ * Class Select_Field
+ * @package BadassRegistration
+ */
+class Select_Field extends Field {
+
+	/**
+	 * @return string
+	 */
+	public function __toString() {
+
+		$options = '';
+
+		foreach ( $this->attributes['option'] as $key => $option ) {
+
+			$option = sprintf(
+				'<option value="%d" %s>%s</option>',
+				esc_attr( $key ),
+				( array_key_exists( 'selected', $option ) ) ? 'selected' : '',
+				esc_attr( $option['text'] )
+			);
+
+			$options .= $option;
+		}
+
+		return sprintf(
+			'<label>%1$s</label><br><select id="%2$s" name="%3$s" class="%4$s" />' . $options . '</select>',
+			esc_attr( $this->get_attribute( 'label' ) ),
+			esc_attr( $this->get_attribute( 'id' ) ),
+			esc_attr( $this->get_attribute( 'name' ) ),
+			esc_attr( implode( ' ', $this->get_attribute( 'classes' ) ) )
+		);
+	}
+
 }
