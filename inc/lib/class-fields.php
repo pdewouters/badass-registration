@@ -107,7 +107,7 @@ abstract class Field {
 		if ( count( $attributes ) == 0 ) {
 			throw new \Exception( 'Attributes array is empty.' );
 		}
-		
+
 		$this->attributes = $attributes;
 
 	}
