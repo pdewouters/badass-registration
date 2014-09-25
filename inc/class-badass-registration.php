@@ -2,7 +2,8 @@
 
 use BadassRegistration\Fields;
 use BadassRegistration\Field;
-use BadassRegistration\Text_Field;
+use BadassRegistration\Input_Field;
+use BadassRegistration\Select_Field;
 
 /**
  * Class Badass_Registration
